@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import Input from "../Input";
 import Select from "react-select";
@@ -12,13 +12,16 @@ import { useAddRecipeMutation } from "@/redux/api/recipeApi";
 import Loader from "../Loader";
 import ErrorMessage from "../ErrorMessage";
 import { motion as m } from "framer-motion";
+import useClickOutside from "@/hooks/useClickOutside";
 
 const AddRecipeModal = ({ isOpen, setIsOpen }) => {
+  const ref = useRef();
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
   const [instructions, setInstructions] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [addRecipe, { isLoading, data }] = useAddRecipeMutation();
+  useClickOutside(ref, () => setIsOpen(false));
 
   const handleChange = (selectedOption) => {
     setSelectedOptions(selectedOption);
@@ -57,6 +60,7 @@ const AddRecipeModal = ({ isOpen, setIsOpen }) => {
       }`}
     >
       <m.div
+        ref={ref}
         initial={{ y: 100 }}
         animate={{ y: 0, transition: { duration: 0.3 } }}
         exit={{ y: 100, opacity: 0, transition: { duration: 0.3 } }}

@@ -1,13 +1,16 @@
 import { useDeleteRecipeMutation } from "@/redux/api/recipeApi";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useRef } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from "sonner";
 import Loader from "../Loader";
 import { motion as m } from "framer-motion";
+import useClickOutside from "@/hooks/useClickOutside";
 
 const DeleteRecipeModal = ({ isOpen, setIsOpen, recipe }) => {
+  const ref = useRef();
   const router = useRouter();
+  useClickOutside(ref, () => setIsOpen(false));
 
   const [deleteRecipe, { isLoading, isSuccess }] = useDeleteRecipeMutation();
   const handleDeleteRecipe = async () => {
@@ -32,6 +35,7 @@ const DeleteRecipeModal = ({ isOpen, setIsOpen, recipe }) => {
       }`}
     >
       <m.div
+        ref={ref}
         initial={{ y: 100 }}
         animate={{ y: 0, transition: { duration: 0.3 } }}
         exit={{ y: 100, opacity: 0, transition: { duration: 0.3 } }}

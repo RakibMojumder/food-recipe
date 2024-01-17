@@ -2,14 +2,6 @@ import { NextResponse } from "next/server";
 import Recipe from "@/models/recipe";
 import dbConnect from "@/config/dbConnect";
 import { uploadImage } from "@/lib/imageUpload";
-const { v2: cloudinary } = require('cloudinary');
-
-// CONFIG CLOUDINARY
-cloudinary.config({
-    cloud_name: process.env.CLOUDE_NAME,
-    api_key: process.env.CLOUDE_API_KEY,
-    api_secret: process.env.CLOUDE_API_SECRET
-});
 
 export const GET = async (request) => {
     try {

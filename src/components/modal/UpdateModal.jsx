@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import Select from "react-select";
 import ingredients from "@/../public/ingredients";
@@ -8,13 +8,16 @@ import { useUpdateRecipeMutation } from "@/redux/api/recipeApi";
 import { toast } from "sonner";
 import ErrorMessage from "../ErrorMessage";
 import { motion as m } from "framer-motion";
+import useClickOutside from "@/hooks/useClickOutside";
 
 const UpdateModal = ({ recipe, isOpen, setIsOpen }) => {
-  const [title, setTitle] = useState(recipe.title);
+  const ref = useRef();
   const [image, setImage] = useState("");
-  const [instructions, setInstructions] = useState(recipe.instructions);
+  const [title, setTitle] = useState(recipe.title);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [instructions, setInstructions] = useState(recipe.instructions);
   const [updateRecipe, { isLoading, data }] = useUpdateRecipeMutation();
+  useClickOutside(ref, () => setIsOpen(false));
 
   const handleChange = (selectedOption) => {
     setSelectedOptions(selectedOption);
@@ -56,6 +59,7 @@ const UpdateModal = ({ recipe, isOpen, setIsOpen }) => {
       }`}
     >
       <m.div
+        ref={ref}
         initial={{ y: 100 }}
         animate={{ y: 0, transition: { duration: 0.3 } }}
         exit={{ y: 100, opacity: 0, transition: { duration: 0.3 } }}

@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -9,7 +7,7 @@ const Recipe = ({ recipe }) => {
   return (
     <div className="border rounded">
       <Image
-        src={recipe.image}
+        src={recipe?.image}
         alt="recipe image"
         width={400}
         height={400}

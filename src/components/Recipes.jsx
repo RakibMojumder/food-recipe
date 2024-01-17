@@ -1,20 +1,23 @@
-import { getRecipes } from "@/lib/getRecipes";
-import Recipe from "./Recipe";
+"use client";
 
-const Recipes = async () => {
-  const recipes = await getRecipes();
+import Recipe from "./Recipe";
+import { useGetRecipesQuery } from "@/redux/api/recipeApi";
+import RecipeSkelton from "./skelton/RecipeSkelton";
+import SearchBox from "./SearchBox";
+
+const Recipes = () => {
+  const { isLoading, data } = useGetRecipesQuery();
 
   return (
-    <div>
-      <div className="text-center py-10">
-        <h2>Our All Food Recipes</h2>
+    <div className="sm:py-10">
+      <div className="text-center">
+        <SearchBox className={"flex sm:hidden my-5"} />
       </div>
-      <div className="grid grid-cols-5 gap-5">
-        {recipes.map((recipe) => (
-          <Recipe key={recipe.title} recipe={recipe} />
-        ))}
-        {recipes.map((recipe) => (
-          <Recipe key={recipe.title} recipe={recipe} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+        {isLoading &&
+          [...Array(10)].map((_, index) => <RecipeSkelton key={index} />)}
+        {data?.map((recipe) => (
+          <Recipe key={recipe._id} recipe={recipe} />
         ))}
       </div>
     </div>

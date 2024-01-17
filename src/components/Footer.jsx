@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
-    <div>
-      <p>All rights reserved</p>
+    <div className="h-20 flex justify-center items-center border-t">
+      <p className="font-semibold">© All Rights Reserved - 2024.</p>
     </div>
   );
 };

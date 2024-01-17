@@ -1,31 +1,22 @@
 "use client";
 
 import Recipe from "@/components/Recipe";
-import axios from "axios";
+import RecipeSkelton from "@/components/skelton/RecipeSkelton";
+import { useGetSearchRecipeQuery } from "@/redux/api/recipeApi";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
 const SearchResult = () => {
   const searchParams = useSearchParams();
   const searchValue = searchParams.get("value");
-  const [recipes, setRecipes] = useState([]);
-
-  useEffect(() => {
-    const getSearchRecipe = async () => {
-      const res = await axios.get(`/api/recipe?search=${searchValue}`);
-      setRecipes(res.data);
-    };
-    getSearchRecipe();
-  }, [searchValue]);
+  const { data, isLoading } = useGetSearchRecipeQuery(searchValue);
 
   return (
-    <div>
-      <h1>Search Result</h1>
-      <div>
-        {recipes?.map((recipe) => (
-          <Recipe key={recipe._id} recipe={recipe} />
-        ))}
-      </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 py-10">
+      {isLoading &&
+        [...Array(5)].map((_, index) => <RecipeSkelton key={index} />)}
+      {data?.map((recipe) => (
+        <Recipe key={recipe._id} recipe={recipe} />
+      ))}
     </div>
   );
 };

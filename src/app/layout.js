@@ -2,6 +2,8 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { Toaster } from 'sonner'
+import RootProvider from '@/providers/RootProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,10 +15,22 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Navbar />
-        <div className='w-[90%] mx-auto pb-14'>{children}</div>
-        <Footer />
+      <body className={inter.className} suppressHydrationWarning={true}>
+        <RootProvider>
+          <Navbar />
+          <div className='w-[90%] mx-auto pb-14'>{children}</div>
+          <Footer />
+          <Toaster toastOptions={{
+            unstyled: true,
+            classNames: {
+              toast: "w-full px-2 py-3 rounded-md flex items-center justify-center gap-x-2.5",
+              error: "bg-red-400",
+              success: "bg-green-400",
+              warning: "text-yellow-400",
+              info: "bg-blue-400",
+            },
+          }} />
+        </RootProvider>
       </body>
     </html>
   )
